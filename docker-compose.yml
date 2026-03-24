@@ -1,0 +1,21 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: vpnbot-redis
+    restart: always
+    volumes:
+      - redis_data:/data
+
+  bot:
+    build: .
+    container_name: vpnbot-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./app/data:/app/app/data
+    depends_on:
+      - redis
+
+volumes:
+  redis_data:
